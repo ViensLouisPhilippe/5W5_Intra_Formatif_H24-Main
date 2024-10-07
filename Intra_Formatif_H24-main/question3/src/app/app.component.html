@@ -29,7 +29,7 @@
 
     <mat-form-field style="width: 100%">
         <mat-label>Rue</mat-label>
-        <input matInput type="text" placeholder="Resther" name="rue" >
+        <input matInput type="text" placeholder="Resther" name="rue" formControlName="rue" >
     </mat-form-field>
 
     <mat-form-field style="width: 100%">
@@ -42,12 +42,14 @@
 
     <mat-form-field style="width: 100%">
       <mat-label>Commentaire</mat-label>
-      <textarea matInput placeholder="Votre commentaire" name="comments" formControlName = "comments"></textarea>
-      <mat-error *ngIf="appForm.get('comments')?.hasError('minWordsValidator')">
-        Votre numéro de rue est <strong>requis</strong>
+      <textarea matInput placeholder="Votre commentaire" name="comments" formControlName="comments"></textarea>
+      <mat-error *ngIf="appForm.get('comments')?.hasError('minWords')">
+        Votre commentaire doit contenir au moins <strong>10 mots</strong>.
       </mat-error>
     </mat-form-field>
-
+    <mat-error *ngIf="appForm.hasError('NameInComment')">
+      Le nom ne doit pas être dans le commentaire rédiger
+    </mat-error>
     <mat-card-actions align="end">
       <button  mat-raised-button color="primary" [disabled]="!appForm.valid" >Acheter</button>
     </mat-card-actions>

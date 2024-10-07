@@ -7,6 +7,7 @@ interface AppFormData {
   roadnumber?: string | null;
   postalcode?: string | null;
   comments?: string | null;
+  rue?: string | null;
 }
 @Component({
   selector: 'app-root',
@@ -25,7 +26,8 @@ export class AppComponent {
       name: ['', [Validators.required]],
       roadnumber : ['', [Validators.required, Validators.min(1000), Validators.max(9999)]],
       postalcode : ['', [Validators.pattern(/^[A-Z][0-9][A-Z][ ]?[0-9][A-Z][0-9]$/)]],
-      comments : ['', [this.minWordsValidator]]
+      comments : ['', [this.minWordsValidator]],
+      rue: ['', []] 
     }, {validators:this.userNameCheckValidator});
 
     this.appForm.valueChanges.subscribe(() => {
@@ -34,23 +36,23 @@ export class AppComponent {
   }
 
   minWordsValidator(form: AbstractControl): ValidationErrors | null {
-      const comment = form.get('comments')?.value;
+      const comment = form.value;
       if(!comment){
         return null;
       }
       const wordCount = comment.trim().split(/\s+/).length;
   
-      return wordCount < 10 ? { minWords: { requiredLength: 10, actualLength: wordCount } } : null;
+      return wordCount < 10 ? { minWords: true } : null;
   }
 
   userNameCheckValidator(form: AbstractControl): ValidationErrors | null {
     const comment = form.get('comments')?.value;
-    const name = form.get('nom')?.value;
+    const name = form.get('name')?.value;
     if(!comment || !name){
       return null;
     }
-
-    return comment.includes(name) ? { noNameInComment: true } : null;
+    let formValid = comment.includes(name);
+    return formValid ? {NameInComment: true } : null;
 }
 }
 
