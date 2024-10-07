@@ -27,7 +27,19 @@ export class UserService {
   disconnect(){
     this.currentUser = undefined;
     localStorage.removeItem(USER_KEY);
+    
+    this.route.navigate(['/home']);
+    location.reload();
+  }
 
-    this.route.navigate(['/home'])
+  isLoggedIn(): Boolean {
+    return localStorage.getItem(USER_KEY) != null;
+  }
+
+  isPreferCat(): Boolean{
+    if(this.currentUser != undefined)
+      return this.currentUser?.prefercat;
+    else 
+      return true;
   }
 }
